@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { PrismaClient, Gender, RelationshipIntent, DateType, Role } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';

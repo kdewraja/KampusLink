@@ -233,7 +233,6 @@ model Match {
 
   user          User     @relation("MatchUser", fields: [userId], references: [id], onDelete: Cascade)
   matchedUser   User     @relation("MatchMatchedUser", fields: [matchedUserId], references: [id], onDelete: Cascade)
-  conversation  Conversation?
 
   @@unique([userId, matchedUserId])
   @@index([matchedUserId])
@@ -251,7 +250,6 @@ model Conversation {
   participants        ConversationParticipant[]
   messages            Message[]
   datePlans           DatePlan[]
-  match               Match?   @relation(fields: [id], references: [id])
 
   @@index([createdAt])
   @@map("conversations")
@@ -322,11 +320,13 @@ model DatePlan {
 
   initiator   User         @relation("DateInitiator", fields: [initiatorId], references: [id], onDelete: Cascade)
   recipient   User         @relation("DateRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
-  conversation Conversation? @relation(fields: [id], references: [id])
+  conversationId String?
+  conversation Conversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@index([initiatorId])
   @@index([recipientId])
   @@index([status])
+  @@index([conversationId])
   @@map("date_plans")
 }
 
