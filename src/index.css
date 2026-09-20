@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #F7F5F0;
+    color: #282523;
+    font-family: 'Plus Jakarta Sans', Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, .font-serif {
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Matte paper scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(237, 232, 223, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(200, 98, 75, 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 98, 75, 0.45);
+}
+
+/* 3D Perspective & Depth Foundations */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.perspective-1600 {
+  perspective: 1600px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* 3D Layer Offsets for Deconstructed Profile breakdown */
+.layer-depth-0 {
+  transform: translateZ(0px);
+}
+
+.layer-depth-1 {
+  transform: translateZ(30px);
+}
+
+.layer-depth-2 {
+  transform: translateZ(60px);
+}
+
+.layer-depth-3 {
+  transform: translateZ(90px);
+}
+
+.layer-depth-4 {
+  transform: translateZ(120px);
+}
+
+/* Matte Editorial Paper Cards */
+.paper-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E5DED4;
+  box-shadow: 0 2px 8px rgba(40, 37, 35, 0.03);
+}
+
+.paper-card-subtle {
+  background-color: #FCFBF9;
+  border: 1px solid #EAE4DC;
+}
+
+.paper-card-sand {
+  background-color: #EDE8DF;
+  border: 1px solid #E0D7CB;
+}
+
+/* Selection */
+::selection {
+  background-color: #F5E6E3;
+  color: #753526;
+}
+
+/* Prevent accidental text selection during card swipe dragging */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
