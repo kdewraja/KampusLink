@@ -1,7 +1,7 @@
 // Automated E2E API & State Verification Script
 async function runTests() {
   const BASE = 'http://127.0.0.1:5001';
-  console.log('🧪 Starting UniPulse System Sanity Tests...\n');
+  console.log('🧪 Starting Kampu$Link System Sanity Tests...\n');
 
   let passed = 0;
   let failed = 0;
