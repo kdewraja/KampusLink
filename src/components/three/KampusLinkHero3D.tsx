@@ -25,7 +25,7 @@ function MatteMaterial({ color, roughness = 0.9, metalness = 0, opacity = 1 }: {
   metalness?: number;
   opacity?: number;
 }) {
-  const materialRef = useRef<THREE.MeshStandardMaterial>();
+  const materialRef = useRef<THREE.MeshStandardMaterial>(null);
 
   useFrame(() => {
     if (materialRef.current) {
