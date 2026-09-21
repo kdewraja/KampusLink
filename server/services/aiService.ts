@@ -104,10 +104,66 @@ class ProductionAIService implements IAIService {
       return { original: text, improved: text, tone, rationale: 'Empty text provided' };
     }
 
-    // Clean grammar first
-    const grammarRes = await this.checkGrammar(trimmed);
-    let base = grammarRes.corrected;
-    // Strip trailing period for more conversational flexibility
+    const groqKey = process.env.GROQ_API_KEY;
+    if (groqKey) {
+      try {
+        const groqResult = await this.callGroqTone(trimmed, tone, groqKey);
+        if (groqResult) return groqResult;
+      } catch (err) {
+        console.warn('Groq tone adjustment failed, falling back to built-in NLP:', err);
+      }
+    }
+
+    return this.adjustToneBuiltin(trimmed, tone);
+  }
+
+  private async callGroqTone(text: string, tone: ToneType, apiKey: string): Promise<ToneAdjustmentResult | null> {
+    const prompt = `You are an empathetic, witty dating wingman and conversation assistant for a campus dating app called Kampu$Link.
+Rewrite the following message to sound ${tone.replace('_', ' ')} while keeping it authentic, collegiate, respectful, and engaging.
+
+Original: "${text}"
+Target Tone: ${tone}
+
+Respond ONLY with valid JSON matching this schema:
+{
+  "improved": "<rewritten message>",
+  "rationale": "<brief 1-sentence reason why this works better>"
+}`;
+
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'qwen/qwen3.8-27b',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.7,
+        max_tokens: 180,
+        response_format: { type: 'json_object' }
+      }),
+    });
+
+    if (!res.ok) return null;
+
+    const data = (await res.json()) as any;
+    const content = data.choices?.[0]?.message?.content;
+    if (!content) return null;
+
+    const parsed = JSON.parse(content);
+    if (!parsed.improved) return null;
+
+    return {
+      original: text,
+      improved: parsed.improved,
+      tone,
+      rationale: parsed.rationale || 'Enhanced with Groq AI Wingman',
+    };
+  }
+
+  private adjustToneBuiltin(trimmed: string, tone: ToneType): ToneAdjustmentResult {
+    let base = trimmed;
     if (base.endsWith('.')) base = base.slice(0, -1);
 
     let improved = base;
