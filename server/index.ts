@@ -609,6 +609,10 @@ if (fs.existsSync(distPath)) {
   });
 }
 
-app.listen(Number(PORT), '0.0.0.0', () => {
-  console.log(`✨ Kampu$Link Production Server running on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(Number(PORT), '0.0.0.0', () => {
+    console.log(`✨ Kampu$Link Production Server running on port ${PORT}`);
+  });
+}
+
+export default app;
